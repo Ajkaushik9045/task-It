@@ -59,6 +59,7 @@ class _AddNewTaskState extends State<AddNewTask> {
               );
               if (_selectedDate != null) {
                 setState(() {
+                  print("j");
                   selectedDate = _selectedDate;
                 });
               }
