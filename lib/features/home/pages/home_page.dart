@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,9 +28,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    final user = context.read<AuthCubit>().state as AuthLoggedIn;
+    Connectivity().onConnectivityChanged.listen((data) async {
+      if (data.contains(ConnectivityResult.wifi)) {
+        await context.read<AddTaskCubit>().syncTasks(user.user.token);
+      }
+    });
     _fetchTasks();
-     
-   }
+  }
 
   void _fetchTasks() {
     final authState = context.read<AuthCubit>().state;

@@ -47,7 +47,7 @@ class TaskRemoteRepository {
           isSynced: 0,
         );
         await taskLocalRepository.insertTask(taskModel);
-        return taskModel; 
+        return taskModel;
       } catch (e) {
         rethrow;
       }
@@ -74,12 +74,31 @@ class TaskRemoteRepository {
 
       return taskList;
     } catch (e) {
-      print(e);
       final tasks = await taskLocalRepository.getTasks();
       if (tasks.isNotEmpty) {
         return tasks;
       }
       rethrow;
+    }
+  }
+
+  Future<bool> syncTask({
+    required String token,
+    required List<TaskModel> tasks,
+  }) async {
+    try {
+      final res = await http.post(
+        Uri.parse("${Constant.backendUrl}/task/sync"),
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token},
+        body: jsonEncode(tasks),
+      );
+      if (res.statusCode != 200) {
+        final decoded = jsonDecode(res.body);
+        throw (decoded['error']?.toString() ?? 'Unknown error occurred');
+      }
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }

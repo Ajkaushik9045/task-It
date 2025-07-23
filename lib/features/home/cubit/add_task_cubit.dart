@@ -51,7 +51,7 @@ class AddTaskCubit extends Cubit<AddTaskState> {
     final unsyncedTasks = await taskLocalRepository.getUnsyncedTasks();
     if (unsyncedTasks.isEmpty) {
       return;
-    }
+    }  
 
     // talk to our postgresql db to add the new task
     // final isSynced = await taskRemoteRepository.syncTasks(
@@ -59,7 +59,7 @@ class AddTaskCubit extends Cubit<AddTaskState> {
     // // change the tasks that were added to the db from 0 to 1
     // if (isSynced) {
     //   print("synced done");
-    //   for (final task in unsyncedTasks) {
+    //   for (final task in unsy ncedTasks) {
     //     // taskLocalRepository.updateRowValue(task.id, 1);
     //   }
   }
