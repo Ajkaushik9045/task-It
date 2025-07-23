@@ -87,10 +87,14 @@ class TaskRemoteRepository {
     required List<TaskModel> tasks,
   }) async {
     try {
+      final taskListInMap = [];
+      for (var task in tasks) {
+        taskListInMap.add(task);
+      }
       final res = await http.post(
         Uri.parse("${Constant.backendUrl}/task/sync"),
         headers: {'Content-Type': 'application/json', 'x-auth-token': token},
-        body: jsonEncode(tasks),
+        body: jsonEncode(taskListInMap),
       );
       if (res.statusCode != 200) {
         final decoded = jsonDecode(res.body);
